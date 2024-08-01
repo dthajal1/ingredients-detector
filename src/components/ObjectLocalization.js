@@ -1,13 +1,17 @@
 // src/components/ObjectLocalization.js
 
-import { useState } from 'react';
-import { Button, TextField, Typography, Box, Paper, List, ListItem, ListItemText, IconButton, Snackbar, Alert, Grid, Divider, CircularProgress } from '@mui/material';
-import { Add, Delete, LocalDining as LocalDiningIcon, Info, Lightbulb, MenuBook as MenuBookIcon, Circle as CircleIcon, KeyboardArrowRight as KeyboardArrowRightIcon } from '@mui/icons-material';
+import { useState, useRef } from 'react';
+import { Button, TextField, Typography, Box, Paper, List, ListItem, ListItemText, IconButton, Snackbar, Alert, Grid, Divider, CircularProgress, Container } from '@mui/material';
+import { Add, Delete, LocalDining as LocalDiningIcon, Info, Lightbulb, MenuBook as MenuBookIcon, Circle as CircleIcon, KeyboardArrowRight as KeyboardArrowRightIcon, CloudUpload as CloudUploadIcon, PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { teal, orange, purple, blue, green } from '@mui/material/colors';
+import { useDropzone } from 'react-dropzone';
+import {Camera} from 'react-camera-pro';
 
 const ObjectLocalization = () => {
-  const [fileName, setFileName] = useState('');
+  const [file, setFile] = useState(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const cameraRef = useRef(null);
   const [objects, setObjects] = useState([]);
   const [imageSrc, setImageSrc] = useState('');
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
@@ -18,10 +22,6 @@ const ObjectLocalization = () => {
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [recipe, setRecipe] = useState(null);
   const [isRecipeLoading, setIsRecipeLoading] = useState(false);
-
-  const handleInputChange = (e) => {
-    setFileName(e.target.value);
-  };
 
   const handleNewIngredientChange = (e) => {
     setNewIngredient(e.target.value);
@@ -41,13 +41,18 @@ const ObjectLocalization = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!file) {
+      setError('Please upload an image file.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
     try {
       const response = await fetch('/api/localize', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fileName }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -56,7 +61,7 @@ const ObjectLocalization = () => {
 
       const data = await response.json();
       setObjects(data.objects);
-      setImageSrc(`/images/${fileName}.png`);
+      setImageSrc(data.imgUrl);
 
       const detectedIngredients = []
       for (const obj of data.objects) {
@@ -120,7 +125,6 @@ const ObjectLocalization = () => {
   
       const data = await response.json();
       setRecipe(data.recipe);
-      console.log(data.recipe);
 
       setError(null);
     } catch (error) {
@@ -159,23 +163,120 @@ const ObjectLocalization = () => {
     )
   }
 
+  // dropzone
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+        'image/*': ['.png', '.jpg', '.jpeg', '.gif']
+    },
+    onDrop: (acceptedFiles) => {
+        if (acceptedFiles.length > 0) {
+            const selectedFile = acceptedFiles[0];
+            setFile(selectedFile);
+        }
+    },
+    multiple: false,  // Set to false to accept only one file
+  });
+
+  const capturePhoto = () => {
+    const photo = cameraRef.current.takePhoto();
+    fetch(photo)
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
+        setFile(file);
+        setIsCameraOpen(false);
+      });
+  };
+
   const showTakeAndUploadImage = () => {
     return (
       <Paper sx={{ padding: 2, marginTop: 2 }}>
         <Typography variant="h5" gutterBottom>Upload Image:</Typography>
         <Divider sx={{ marginBottom: 2 }} />
-        <form onSubmit={handleSubmit} style={{ marginBottom: '16px' }}>
-            <TextField
-            label="Enter file name"
-            variant="outlined"
-            value={fileName}
-            onChange={handleInputChange}
-            fullWidth
-            style={{ marginBottom: '16px' }}
-            />
-            <Button variant="contained" type="submit">Detect Objects</Button>
-        </form>
+        <Box
+          {...getRootProps()}
+          sx={{
+            border: '2px dashed #90a4ae',
+            borderRadius: '8px',
+            padding: '20px',
+            textAlign: 'center',
+            backgroundColor: isDragActive ? '#e3f2fd' : '#fafafa',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s',
+            '&:hover': {
+              backgroundColor: '#f1f1f1',
+            },
+          }}
+        >
+          <input {...getInputProps()} />
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="span"
+            sx={{ fontSize: '3rem' }}
+          >
+            <CloudUploadIcon fontSize="inherit" />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ marginTop: '8px' }}>
+            Upload your image
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            PNG, JPG and GIF files are allowed
+          </Typography>
+          <Typography variant="body2" sx={{ marginTop: '8px' }}>
+            Drag and drop or browse to choose a file
+          </Typography>
+        </Box>
 
+        {file && (
+          <Typography variant="body1" textAlign="center" sx={{ marginTop: '16px' }} gutterBottom>
+            Selected file: {file.name}
+          </Typography>
+        )}
+
+        <Container sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setIsCameraOpen(true)}
+          >
+            <PhotoCameraIcon />
+            Take Photo
+          </Button>
+        </Container>
+        
+        
+        {isCameraOpen && (
+          <Box sx={{ marginTop: '16px', textAlign: 'center' }}>
+            <Camera
+              ref={cameraRef}
+              aspectRatio={16 / 9}
+              facingMode="environment"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginTop: '8px' }}
+              onClick={capturePhoto}
+            >
+              Capture
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{ marginTop: '8px', marginLeft: '8px' }}
+              onClick={() => setIsCameraOpen(false)}
+            >
+              Cancel
+            </Button>
+          </Box>
+        )}
         {error && <Typography color="error">{error}</Typography>}
       </Paper>
     )
@@ -184,7 +285,7 @@ const ObjectLocalization = () => {
   const showDetectedIngredients = () => {
     return (
       <Paper sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, padding: 2, marginTop: 2 }}>
-        <Typography variant="h5" gutterBottom>Detected Ingredients:</Typography>
+        <Typography variant="h5" gutterBottom>Detected Items:</Typography>
         <Divider sx={{ marginBottom: 2 }} />
         <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
         <TextField
