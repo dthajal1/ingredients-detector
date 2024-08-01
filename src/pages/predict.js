@@ -1,21 +1,21 @@
 import Head from 'next/head';
 import Navbar from '@/components/Nav';
-import Landing from '@/components/Landing';
+import ObjectLocalization from "@/components/ObjectLocalization";
 
-const Homepage = () => {
+const PredictPage = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Predict</title>
         <meta name="description" content="" />
         <meta property="og:title" content="" />
         <meta property="og:description" content="" />
       </Head>
       <Navbar />
-      <Landing />
+      <ObjectLocalization />
     </>
   );
 }
 
-export default Homepage;
+export default PredictPage;
 
