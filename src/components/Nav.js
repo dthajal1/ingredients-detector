@@ -21,7 +21,7 @@ const drawerWidth = 240;
 const navItems = [
     {
         name: 'Github',
-        link: 'https://github.com/dthajal1/recipe-predictor',
+        link: 'https://github.com/dthajal1/ingredients-detector',
         icon: <Github />,
     }
 ];

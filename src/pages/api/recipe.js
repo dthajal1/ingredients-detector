@@ -3,7 +3,6 @@ import OpenAI from 'openai';
 
 require('dotenv').config();
 
-
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { ingredients } = req.body;
@@ -24,13 +23,17 @@ export default async function handler(req, res) {
       });
 
       let recipeText = completion.choices[0].message.content;
+
       // Remove the triple backticks from the response
       recipeText = recipeText.replace(/^```json\n/, '').replace(/```$/, '').trim();
       let recipe;
 
       try {
         recipe = JSON.parse(recipeText);
-        return res.status(200).json({ recipe });
+        if (recipe.recipeName.includes(`I don't think we can make a recipe with that ingredient`)) {
+          return res.status(200).json({ msg: "I don't think we can make a recipe with that ingredient.", success: false });
+        }
+        return res.status(200).json({ result: recipe, success: true });
       } catch (jsonError) {
         console.error('Error parsing JSON:', jsonError);
         return res.status(500).json({ error: 'Failed to parse recipe JSON' });
@@ -44,29 +47,31 @@ export default async function handler(req, res) {
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-
 const generatePrompt = (ingredients) => `
-You are an expert chef. Create a detailed recipe with the following sections in JSON format:
+You are an expert chef. Before creating a recipe, first check the ingredients list to ensure all items are suitable for cooking and commonly used. If any ingredient is unknown or inappropriate (e.g., human, cat, dog, or non-food items), respond with: "I don't think we can make a recipe with that ingredient."
 
+Ingredients: ${ingredients.join(', ')}.
+
+If all ingredients are suitable, create a detailed recipe strictly in the JSON format below. Do not include any additional text:
+
+\`\`\`json
 {
-  "recipeName": "A creative name for the recipe",
+  "recipeName": "Name of the recipe",
   "requiredIngredients": [
     "List of ingredients with exact quantities"
   ],
   "instructions": [
-    "Step-by-step cooking instructions, including times and techniques"
+    "Step-by-step cooking instructions with times and techniques"
   ],
-  "servingSuggestions": "Tips for serving or pairing",
+  "servingSuggestions": "Serving and pairing tips",
   "tipsAndVariations": [
-    "Optional tips for variations"
+    "Optional tips and variations"
+  ],
+  "youtubeSearchLinks": [
+    "2-5 YouTube search links for similar recipes (e.g., 'https://www.youtube.com/results?search_query={query}')"
   ]
 }
+\`\`\`
 
-Make sure the JSON is well-formed.
-
-If any ingredient is unknown or unusual, respond with: "I don't think we can make a recipe with that ingredient."
-
-Ingredients: ${ingredients.join(', ')}.
-
-Ensure the recipe is easy to follow and suitable for home cooks.
+Ensure the JSON is well-formed and the recipe is easy to follow for home cooks.
 `;

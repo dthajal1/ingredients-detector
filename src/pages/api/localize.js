@@ -43,19 +43,17 @@ export default async function handler(req, res) {
       // Parse the form data
       const { files } = await parseForm(req);
 
-      // Get the file
-      const file = files.file[0]; // Assuming 'file' is the field name from the frontend
-  
+      const file = files.file[0];
       if (!file || !file.filepath) {
         return res.status(400).json({ message: 'No file uploaded' });
       }
   
-      // Generate a unique file name for Google Cloud Storage
+      // Generate unique file name for GCS
       const fileName = uuidv4() + path.extname(file.originalFilename);
       const bucket = storage.bucket(bucketName);
       const gcsFile = bucket.file(fileName);
   
-      // Upload the file to Google Cloud Storage
+      // Upload to GCS
       await bucket.upload(file.filepath, {
         destination: gcsFile,
         metadata: {
@@ -63,11 +61,12 @@ export default async function handler(req, res) {
         },
       });
     
-      // Create the request object for Google Cloud Vision
+      // Create request obj for Google Cloud Vision
       const gcsUri = `gs://${bucketName}/${fileName}`;
       const publicUrl = gcsUri.replace('gs://', 'https://storage.googleapis.com/');
       const [result] = await client.objectLocalization(gcsUri);
       const objects = result.localizedObjectAnnotations;
+      
       res.status(200).json({ objects, imgUrl: publicUrl });
     } catch (error) {
       console.error('Error handling file upload and processing:', error);
