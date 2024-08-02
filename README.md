@@ -4,6 +4,10 @@ Ingredients Detector is an app that helps users identify ingredients from images
 ## Demo
 TODO: Add demo
 
+* add demo
+* deploy to vercel
+* add license
+
 ## Features
 1. **Take or Upload Images**: Snap a photo or upload images of your ingredients.
 2. **Identify Ingredients**: Identify ingredients in uploaded images using Google Vision API.
@@ -43,6 +47,7 @@ npm run dev
 * Feature to allow users to upload multiple ingredient images.
 * Integrate chatbot with the recipe generator so users can ask follow-up questions.
 * Fine-tune the model for better results (more accurate ingredients recognition).
+* generate recipe videos using Generative AI (if it is possible?)
 
 ## Contributing
 Contributions are welcome! Here's how you can get involved:

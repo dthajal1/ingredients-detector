@@ -1,5 +1,5 @@
 {
-  "name": "recipe-predictor",
+  "name": "ingredients-detector",
   "version": "0.1.0",
   "private": true,
   "scripts": {

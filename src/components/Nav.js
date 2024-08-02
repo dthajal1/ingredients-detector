@@ -1,21 +1,6 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Slide from '@mui/material/Slide';
-import Github from '@mui/icons-material/GitHub';
-import { ListItemIcon } from '@mui/material';
+import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography, Button, useScrollTrigger, Slide, ListItemIcon } from '@mui/material';
+import { Menu as MenuIcon, GitHub as Github } from '@mui/icons-material';
 
 const drawerWidth = 240;
 const navItems = [
@@ -50,7 +35,7 @@ function NavBar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        Recipe Predictor
+        Ingredients Detector
       </Typography>
       <Divider />
       <List>
@@ -69,7 +54,7 @@ function NavBar(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex', mb: 5 }}>
+    <Box sx={{ display: 'flex', mb: 10 }}>
       <HideOnScroll {...props}>
         <AppBar component="nav" sx={{ px: { xs: '5%', sm: '10%' }}}>
           <Toolbar>
@@ -82,12 +67,22 @@ function NavBar(props) {
             >
               <MenuIcon />
             </IconButton>
+            <Box component='img' src='/images/logo.png' 
+              sx={{ 
+                display: { xs: 'none', sm: 'block' }, 
+                width: '20px', 
+                height: 'auto', 
+                cursor: 'pointer', 
+                backgroundColor: 'white',
+                padding: '4px',
+                }} 
+            />
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, ml: 1 }}
             >
-              Recipe Predictor
+              Ingredients Detector
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (

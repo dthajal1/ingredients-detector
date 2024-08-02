@@ -4,14 +4,16 @@ import UploadImageSection from '@/components/UploadImageSection';
 import DetectedItemsSection from '@/components/DetectedItemsSection';
 import RecipeSection from '@/components/RecipeSection';
 import { useState } from 'react';
-import { Alert, AlertTitle, Box, Button, Container, CssBaseline, Grid, Snackbar, Tab, Tabs } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Container, Divider, Grid, Snackbar, Tab, Tabs } from '@mui/material';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
+import LandingPage from '../components/Landing';
 
 const Homepage = () => {
   const [file, setFile] = useState(null);
 
   const [objects, setObjects] = useState([]);
   const [imageSrc, setImageSrc] = useState('');
+  const [isImgLoading, setIsImgLoading] = useState(false);
   
   const [ingredients, setIngredients] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -33,7 +35,10 @@ const Homepage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
+    setIsImgLoading(true);
+    setImageSrc(null);
+    setTabIndex(tabIndex + 1);
     setError(null);
 
     if (!file) {
@@ -58,23 +63,26 @@ const Homepage = () => {
       const data = await response.json();
       if (data.objects.length === 0) {
         setError("Couldn't detect any items in the image. Please try again with another image.");
-        return;
-      }
-      setObjects(data.objects);
-      setImageSrc(data.imgUrl);
-
-      const detectedIngredients = []
-      for (const obj of data.objects) {
-        if (!detectedIngredients.includes(obj.name)) {
-          detectedIngredients.push(obj.name);
+      } else {
+        setObjects(data.objects);
+        setImageSrc(data.imgUrl);
+  
+        const detectedIngredients = []
+        for (const obj of data.objects) {
+          if (!detectedIngredients.includes(obj.name)) {
+            detectedIngredients.push(obj.name);
+          }
         }
+        setIngredients(detectedIngredients);
+  
+        setError(null);
       }
-      setIngredients(detectedIngredients);
 
-      setError(null);
     } catch (err) {
       setError(err.message);
       setObjects([]);
+    } finally {
+      setIsImgLoading(false);
     }
   };
 
@@ -121,10 +129,16 @@ const Homepage = () => {
 
   const handleNext = (e) => {
     if (tabIndex === 0) {
-      setTabIndex(tabIndex + 1);
       handleSubmit(e);
     } else if (tabIndex === 1) {
       handleFinalize();
+    }
+  };
+
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -132,14 +146,18 @@ const Homepage = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
-        <meta name="description" content="" />
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
+        <title>Ingredients Detector</title>
+        <meta name="description" content="Ingredients Detector helps you identify ingredients from images and generate recipes effortlessly." />
+        <meta property="og:title" content="Ingredients Detector" />
+        <meta property="og:description" content="Snap a photo or upload images of your ingredients, and let Ingredients Detector do the rest. Identify ingredients, manage your list, and generate recipes with ease." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="TODO: Add URL" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
+      <LandingPage scrollToSection={scrollToSection} />
 
-      <Container sx={{ py: 6 }} >
+      <Container>
         {error && (
           <Alert 
             severity="error" 
@@ -157,12 +175,12 @@ const Homepage = () => {
           <Tab label="Detect Items" disabled={!file} />
           <Tab label="Recipe" disabled={!recipe} />
         </Tabs>
-        <Box sx={{ py: 2 }}>
+        <Box sx={{ py: 2 }} id="main">
           {tabIndex === 0 && (
             <UploadImageSection file={file} setFile={setFile} />
           )}
           {tabIndex === 1 && (
-            <DetectedItemsSection objects={objects} imageSrc={imageSrc} ingredients={ingredients} setIngredients={setIngredients} setError={setError} />
+            <DetectedItemsSection isImgLoading={isImgLoading} objects={objects} imageSrc={imageSrc} ingredients={ingredients} setIngredients={setIngredients} setError={setError} />
           )}
           {tabIndex === 2 && <RecipeSection isRecipeLoading={isRecipeLoading} recipe={recipe} />}
 

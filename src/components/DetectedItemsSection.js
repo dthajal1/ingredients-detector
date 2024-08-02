@@ -1,8 +1,8 @@
-import { Box, Button, Divider, Grid, IconButton, List, ListItem, ListItemText, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Divider, Grid, IconButton, List, ListItem, ListItemText, Paper, TextField, Typography } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import React, {useState} from 'react'
 
-const DetectedItemsSection = ({ objects, imageSrc, ingredients, setIngredients, setError }) => {
+const DetectedItemsSection = ({ isImgLoading, objects, imageSrc, ingredients, setIngredients, setError }) => {
     const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
     const [newIngredient, setNewIngredient] = useState('');
 
@@ -103,7 +103,14 @@ const DetectedItemsSection = ({ objects, imageSrc, ingredients, setIngredients, 
       <Grid container spacing={2}>
         <Grid item md={12} lg={6}>
           <Box sx={{ height: '100%', display: 'flex'}}>
-            {showLocalizedImage()}
+            {isImgLoading ? (
+              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: 2 }}>
+                <CircularProgress />
+                <Typography variant="h6" sx={{ marginTop: 2 }}>Loading img...</Typography>
+              </Box>
+              ) : 
+              showLocalizedImage()
+            }
           </Box>
         </Grid>
         <Grid item md={12} lg={6}>
