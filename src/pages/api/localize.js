@@ -7,12 +7,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 require('dotenv').config();
 
+// Parse JSON credentials from environment variable
+const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+
 const client = new ImageAnnotatorClient({
-  keyFilename: path.join(process.cwd(), process.env.GOOGLE_APPLICATION_CREDENTIALS),
+  credentials: credentials,
 });
 
 const storage = new Storage({
-  keyFilename: path.join(process.cwd(), process.env.GOOGLE_APPLICATION_CREDENTIALS),
+  credentials: credentials,
 });
 
 const bucketName = process.env.GCS_BUCKET_NAME;
