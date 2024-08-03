@@ -4,12 +4,6 @@ Ingredients Detector is an app that helps users identify ingredients from images
 ## Demo
 TODO: Add demo
 
-* add demo
-* deploy to vercel
-* add license
-* add hotjar or any analytics tool
-* ask users for their email (give value in return? maybe a cheatsheet/pattern for coding problems?)
-
 ## Features
 1. **Take or Upload Images**: Snap a photo or upload images of your ingredients.
 2. **Identify Ingredients**: Identify ingredients in uploaded images using Google Vision API.
