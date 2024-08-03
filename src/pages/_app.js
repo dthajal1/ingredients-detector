@@ -1,5 +1,7 @@
 // pages/_app.js
+import { ClerkProvider } from '@clerk/nextjs';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { light } from '@clerk/themes';
 import { CssBaseline } from '@mui/material';
 import '../style.css';
 
@@ -16,10 +18,12 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <ClerkProvider appearance={{ baseTheme: light, variables: { colorPrimary: '#556cd6'} }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </ClerkProvider>
   )
 }
 

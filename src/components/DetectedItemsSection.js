@@ -100,14 +100,18 @@ const DetectedItemsSection = ({ isImgLoading, objects, imageSrc, ingredients, se
     }
 
     return (
-      <Grid container spacing={2}>
+      <Grid container spacing={2} minHeight={'40vh'}>
         <Grid item md={12} lg={6}>
           <Box sx={{ height: '100%', display: 'flex'}}>
             {isImgLoading ? (
-              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: 2 }}>
-                <CircularProgress />
-                <Typography variant="h6" sx={{ marginTop: 2 }}>Loading img...</Typography>
-              </Box>
+              <Grid container justifyContent="center" alignItems="center">
+                <Grid item xs={12} sx={{ textAlign: 'center' }}>
+                  <CircularProgress />
+                </Grid>
+                <Grid item xs={12} sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6">Loading img...</Typography>
+                </Grid>
+              </Grid>
               ) : 
               showLocalizedImage()
             }

@@ -1,79 +1,86 @@
-import { Box, CircularProgress, Divider, Grid, List, ListItem, Paper, Typography } from '@mui/material';
-import { teal, purple, orange, red, blue, green } from '@mui/material/colors';
-import {ListAlt as ListAltIcon, MenuBook as MenuBookIcon, LocalDining as LocalDiningIcon, Lightbulb as LightbulbIcon, Info as InfoIcon, KeyboardArrowRight as KeyboardArrowRightIcon, ArrowOutward as ArrowOutwardIcon, YouTube, Circle as CircleIcon } from '@mui/icons-material';
+import { Box, Chip, CircularProgress, Divider, Grid, List, ListItem, Paper, Typography } from '@mui/material';
+import {ListAlt as ListAltIcon, MenuBook as MenuBookIcon, LocalDining as LocalDiningIcon, Group as GroupIcon, Timer as TimerIcon, Info as InfoIcon, ArrowOutward as ArrowOutwardIcon, YouTube, Circle as CircleIcon } from '@mui/icons-material';
 import React from 'react'
 
 const RecipeSection = ({ isRecipeLoading, recipe }) => {
     const showRecipe = () => {
-      const { recipeName, requiredIngredients, instructions, servingSuggestions, tipsAndVariations, youtubeSearchLinks } = recipe;
+      const { recipeName, servingSize, cookingTime, requiredIngredients, instructions, nutritionalInformation, youtubeSearchLinks } = recipe;
       return (
-        <Paper elevation={3} sx={{ padding: 2}}>
-          <Typography variant="h5" mb={4} gutterBottom>
-            {recipeName} Recipe
-            <MenuBookIcon sx={{ verticalAlign: 'middle', ml: 2, color: teal[500] }} />
-          </Typography>
-          <Divider sx={{ marginBottom: 3 }} /> 
+        <Paper elevation={3} sx={{ marginTop: 2}}>
           <Grid container spacing={2}>
-            <Grid item sm={12} md={8} borderRight={{ sm: 'none', md: '1px solid #ccc' }} >
-              <Typography variant="h6" gutterBottom>
-                <ListAltIcon sx={{ verticalAlign: 'middle', mr: 1, color: purple[500] }} />
+            <Grid item sm={12} md={8}>
+              <Typography variant="h5" pl={2} gutterBottom>
+                {recipeName}
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 3, pl: 2 }}>
+                <Chip icon={<GroupIcon />} label={`Servings: ${servingSize}`} />
+                <Chip icon={<TimerIcon />} label={`${cookingTime.prepTime} mins (prep) + ${cookingTime.cookTime} mins (cook)`} />
+              </Box>
+              <Typography variant="h6" pl={2} gutterBottom>
+                <ListAltIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
                 Instructions:
               </Typography>
-              <Divider sx={{ marginBottom: 2 }} />
-              {instructions.map((instruction, index) => (
-                <Typography paragraph key={index} px={2}>
-                  {instruction}
-                </Typography>
-              ))}
+              <Divider />
+              <ol style={{ pl: 2 }}>
+                {instructions.map((instruction, index) => (
+                  <li key={index}>
+                    <Typography variant="body1" paragraph>
+                      {instruction}
+                    </Typography>
+                  </li>
+                ))}
+              </ol>
             </Grid>
             <Grid item sm={12} md={4}>
-              <Typography variant="h6" gutterBottom>
-                <LocalDiningIcon sx={{ verticalAlign: 'middle', mr: 1, color: orange[500] }} />
-                Ingredients List:
-              </Typography>
-              <Divider sx={{ marginBottom: 2 }} />
-              <List>
-                {requiredIngredients.map((ingredient, index) => (
-                  <ListItem key={index}>
-                    <CircleIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: 8 }} />
-                    {ingredient}
-                  </ListItem>
-                ))}
-              </List>
+              <Paper elevation={3} sx={{ padding: 2, height: '100%'}}>
+                <Typography variant="h6" gutterBottom>
+                  <LocalDiningIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
+                  Ingredients List:
+                </Typography>
+                <Divider />
+                <List>
+                  {requiredIngredients.map((ingredient, index) => (
+                    <ListItem key={index}>
+                      <CircleIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: 8 }} />
+                      {ingredient}
+                    </ListItem>
+                  ))}
+                </List>
+              </Paper>
             </Grid>
           </Grid>
-          <Divider sx={{ marginY: 3 }} />
-          <Typography variant="h6" gutterBottom>
-            <InfoIcon sx={{ verticalAlign: 'middle', mr: 1, color: blue[500] }} />
-            Serving Suggestions:
-          </Typography>
-          <Typography borderLeft='5px solid' pl={2} paragraph>
-            {servingSuggestions}
-          </Typography>
-          
-          <Divider sx={{ marginY: 3 }} />
-          
-          <Typography variant="h6" gutterBottom>
-            <LightbulbIcon sx={{ verticalAlign: 'middle', mr: 1, color: green[500] }} />
-            Tips & Variations:
-          </Typography>
-          {tipsAndVariations.map((tip, index) => (
-            <Typography paragraph key={index}>
-              <KeyboardArrowRightIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-              {tip}
-            </Typography>
-          ))}
-          <Divider sx={{ marginY: 3 }} />
-          <Typography variant="h6" gutterBottom>
-            <YouTube sx={{ verticalAlign: 'middle', mr: 1, color: red[500] }} />
-            YouTube Search Links:
-          </Typography>
-          {youtubeSearchLinks.map((link, index) => (
-            <Typography paragraph key={index}>
-              <ArrowOutwardIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-              <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
-            </Typography>
-          ))}
+          <Grid container spacing={2}>
+            <Grid item sm={12} md={8}>
+              <Typography variant="h6" pl={2} gutterBottom>
+                <YouTube sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
+                YouTube Search Links:
+              </Typography>
+              <Divider />
+              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2, pl: 2 }}>
+                {youtubeSearchLinks.map((link, index) => (
+                  <Typography paragraph key={index}>
+                    <ArrowOutwardIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
+                    <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+                  </Typography>
+                ))}
+              </Box>
+            </Grid>
+            <Grid item sm={12} md={4}>
+              <Paper elevation={3} sx={{ padding: 2, height: '100%'}}>
+                <Typography variant="h6" gutterBottom>
+                  <InfoIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
+                  Nutritional Information:
+                </Typography>
+                <Divider />
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  <Chip label={`Calories: ${nutritionalInformation.calories}g`} color='primary' />
+                  <Chip label={`Protein: ${nutritionalInformation.protein}g`} color='primary' />
+                  <Chip label={`Carbohydrates: ${nutritionalInformation.carbohydrates}g`} color='primary' />
+                  <Chip label={`Fat: ${nutritionalInformation.fat}g`} color='primary' />
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
         </Paper>
       )
     }

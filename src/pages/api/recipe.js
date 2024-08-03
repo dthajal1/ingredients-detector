@@ -57,16 +57,23 @@ If all ingredients are suitable, create a detailed recipe strictly in the JSON f
 \`\`\`json
 {
   "recipeName": "Name of the recipe",
+  "servingSize": "Number of servings (e.g., 4-6)",
+  "cookingTime": {
+    "prepTime": "Preparation time in minutes",
+    "cookTime": "Cooking time in minutes",
+  },
   "requiredIngredients": [
     "List of ingredients with exact quantities"
   ],
   "instructions": [
     "Step-by-step cooking instructions with times and techniques"
   ],
-  "servingSuggestions": "Serving and pairing tips",
-  "tipsAndVariations": [
-    "Optional tips and variations"
-  ],
+  "nutritionalInformation": {
+    "calories": "Calories per serving",
+    "protein": "Protein in grams per serving",
+    "carbohydrates": "Carbohydrates in grams per serving",
+    "fat": "Fat in grams per serving"
+  },
   "youtubeSearchLinks": [
     "2-5 YouTube search links for similar recipes (e.g., 'https://www.youtube.com/results?search_query={query}')"
   ]

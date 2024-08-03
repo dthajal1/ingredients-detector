@@ -4,6 +4,12 @@ Ingredients Detector is an app that helps users identify ingredients from images
 ## Demo
 TODO: Add demo
 
+* reassure users of privacy and how their data is used
+* integrate chat room for feedback -- 
+  * likes, comments, etc
+  * what to use for username? require them to sign in
+* use meta llama for recipe generation?
+
 ## Features
 1. **Take or Upload Images**: Snap a photo or upload images of your ingredients.
 2. **Identify Ingredients**: Identify ingredients in uploaded images using Google Vision API.
