@@ -7,6 +7,8 @@ TODO: Add demo
 * add demo
 * deploy to vercel
 * add license
+* add hotjar or any analytics tool
+* ask users for their email (give value in return? maybe a cheatsheet/pattern for coding problems?)
 
 ## Features
 1. **Take or Upload Images**: Snap a photo or upload images of your ingredients.
@@ -35,7 +37,7 @@ cd ingredients-detector
 ```bash
 npm install
 ```
-* Create a .env file in the root directory and add environment variables. Use .env.example as a reference.
+* Create a .env file in the root directory. Use .env.example as a reference.
 * Start the dev server
 ```bash
 npm run dev

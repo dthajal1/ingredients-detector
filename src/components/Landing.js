@@ -5,7 +5,7 @@ import {  ArrowDownward } from '@mui/icons-material';
 
 const LandingPage = ({ scrollToSection }) => {
   return (
-    <Box sx={{minHeight: '30vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', mb: 4}}>
+    <Box sx={{minHeight: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', mb: 4}}>
       <Container maxWidth="md">
         <Box sx={{ borderRadius: '16px', padding: '40px 30px', textAlign: 'center'}}>
           <Typography variant="h2" component="h1" gutterBottom>
