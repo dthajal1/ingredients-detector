@@ -7,10 +7,13 @@ import React, { useState, useRef } from 'react';
 const UploadImageSection = ({ file, setFile }) => {
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const cameraRef = useRef(null);
-    const [facingMode, setFacingMode] = useState('environment');
+    const [numberOfCameras, setNumberOfCameras] = useState(0);
 
     const toggleFacingMode = () => {
-        setFacingMode((prevFacingMode) => (prevFacingMode === 'environment' ? 'user' : 'environment'));
+        if (cameraRef.current) {
+            const result = cameraRef.current.switchCamera();
+            console.log(result);
+        }
     };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -86,8 +89,8 @@ const UploadImageSection = ({ file, setFile }) => {
             
             {isCameraOpen && (
                 <Box sx={{ position: 'relative', marginTop: '16px', textAlign: 'center' }}>
-                    <Camera ref={cameraRef} aspectRatio={16 / 9} facingMode={facingMode} />
-                    <IconButton color="primary" onClick={toggleFacingMode} sx={{ position: 'absolute', top: '16px', right: '16px' }}>
+                    <Camera ref={cameraRef} aspectRatio={16 / 9} numberOfCamerasCallback={setNumberOfCameras} />
+                    <IconButton color="primary" disabled={numberOfCameras <= 1} onClick={toggleFacingMode} sx={{ position: 'absolute', top: '16px', right: '16px' }}>
                         <FlipCameraIosIcon fontSize="large" />
                     </IconButton>
                     <Button variant="contained" color="primary" sx={{ marginTop: '8px' }} onClick={capturePhoto}>
