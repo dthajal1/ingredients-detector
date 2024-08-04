@@ -2,10 +2,11 @@ import UploadImageSection from '@/components/UploadImageSection';
 import DetectedItemsSection from '@/components/DetectedItemsSection';
 import RecipeSection from '@/components/RecipeSection';
 import { useState } from 'react';
-import { Alert, AlertTitle, Box, Button, Container, Divider, Grid, Snackbar, Tab, Tabs } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Container, Grid, Snackbar, Tab, Tabs } from '@mui/material';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import Head from 'next/head';
 import NavBar from '@/components/Nav';
+import FeedbackStats from '@/components/FeedbackStats';
 
 const MainPage = () => {
   const [file, setFile] = useState(null);
@@ -165,7 +166,7 @@ const MainPage = () => {
           <Tab label="Detect Items" disabled={!file} />
           <Tab label="Recipe" disabled={!recipe} />
           </Tabs>
-          <Box sx={{ py: 2 }} id="main" minHeight="80vh">
+          <Box sx={{ py: 2 }} id="main" minHeight="40vh">
           {tabIndex === 0 && (
               <UploadImageSection file={file} setFile={setFile} />
           )}
@@ -194,6 +195,8 @@ const MainPage = () => {
 
           </Box>
       </Container>
+              
+      <FeedbackStats setError={setError} />
 
       {/* Confirmation dialog */}
       <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={showConfirmation} autoHideDuration={6000} onClose={() => setShowConfirmation(false)}>

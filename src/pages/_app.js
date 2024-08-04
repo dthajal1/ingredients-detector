@@ -3,7 +3,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import { light } from '@clerk/themes';
 import { CssBaseline } from '@mui/material';
-import '../style.css';
+import '../styles/style.css'
 
 const theme = createTheme({
   palette: {
