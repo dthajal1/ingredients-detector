@@ -7,9 +7,8 @@ TODO: Add demo
 * make sure api routes are protected
 * real time updates - when edited on one machine/account, should be reflected on other almost instantly
   * without having to refresh?
-* on iphone, flip camera isn't working
 * reassure users of privacy and how their data is used
-* use meta llama for recipe generation?
+* use open source llm for recipe generation? maybe meta llama 3?
 
 ## Features
 1. **Take or Upload Images**: Snap a photo or upload images of your ingredients.

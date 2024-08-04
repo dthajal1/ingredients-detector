@@ -197,6 +197,7 @@ const MainPage = () => {
       </Container>
               
       <FeedbackStats setError={setError} />
+      <br />
 
       {/* Confirmation dialog */}
       <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={showConfirmation} autoHideDuration={6000} onClose={() => setShowConfirmation(false)}>
