@@ -180,7 +180,7 @@ const MainPage = () => {
               {tabIndex > 0 && (
                   <Button variant="outlined" onClick={() => setTabIndex(tabIndex - 1)}>
                   <ArrowBackIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-                  Back
+                  {tabIndex == 1 ? 'Back' : tabIndex == 2 ? 'Switch Ingredients' : null}
                   </Button>
               )}
               </Grid>

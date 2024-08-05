@@ -21,15 +21,15 @@ const RecipeSection = ({ isRecipeLoading, recipe }) => {
                 Instructions:
               </Typography>
               <Divider />
-              <ol style={{ pl: 2 }}>
+              <Box sx={{ p: 2 }}>
                 {instructions.map((instruction, index) => (
-                  <li key={index}>
+                  <Box key={index}>
                     <Typography variant="body1" paragraph>
                       {instruction}
                     </Typography>
-                  </li>
+                  </Box>
                 ))}
-              </ol>
+              </Box>
             </Grid>
             <Grid item sm={12} md={4}>
               <Paper elevation={3} sx={{ padding: 2, height: '100%'}}>
@@ -81,6 +81,15 @@ const RecipeSection = ({ isRecipeLoading, recipe }) => {
               </Paper>
             </Grid>
           </Grid>
+          <Divider />
+          <br />
+          <Typography variant="body1" color='textSecondary' textAlign='center' gutterBottom>
+            Not feeling the recipe? You can always change the ingredients below!
+          </Typography>
+          <Typography variant="body1" color='textSecondary' textAlign='center' gutterBottom>
+            Happy Cooking :)
+          </Typography>
+          <br />
         </Paper>
       )
     }
