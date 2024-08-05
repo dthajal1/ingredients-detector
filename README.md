@@ -2,13 +2,8 @@
 Ingredients Detector is an app that helps users identify ingredients from images and generate recipes. Using Google Vision API for image recognition and generative AI for recipe creation, this app aims to make cooking and meal prep simple and fun.
 
 ## Demo
-TODO: Add demo
-
-* make sure api routes are protected
-* real time updates - when edited on one machine/account, should be reflected on other almost instantly
-  * without having to refresh?
-* reassure users of privacy and how their data is used
-* use open source llm for recipe generation? maybe meta llama 3?
+[Demo Video Here!](https://youtu.be/NLzUxuAwg7c)
+<img width="1440" alt="Screenshot 2024-08-05 at 2 21 49 PM" src="https://github.com/user-attachments/assets/2e37042b-3bec-4985-bfad-60f135de3783">
 
 ## Features
 1. **Take or Upload Images**: Snap a photo or upload images of your ingredients.
@@ -44,6 +39,12 @@ npm run dev
 ```
 * Open http://localhost:3000 in your browser and TADA! You're ready to go!
 
+## TODO
+* make sure api routes are protected
+* real time updates - when edited on one machine/account, should be reflected on other almost instantly
+  * without having to refresh?
+* reassure users of privacy and how their data is used
+* use open source llm for recipe generation? maybe meta llama 3?
 
 ## Future Plans
 * Feature to allow users to upload multiple ingredient images.
